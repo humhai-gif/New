@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Durga Puja VIP Pass</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#ff512f,#dd2476);
+  color:white;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+.card{
+  width:100%;
+  max-width:420px;
+  background:rgba(0,0,0,.75);
+  border-radius:22px;
+  padding:28px;
+  text-align:center;
+  box-shadow:0 0 35px rgba(255,255,255,.25);
+}
+h1{margin-top:0}
+input,select,button{
+  width:100%;
+  padding:14px;
+  margin:8px 0;
+  border:0;
+  border-radius:10px;
+  font-size:16px;
+}
+button{
+  background:#ffcc00;
+  color:#111;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:active{transform:scale(.97)}
+
+#screen{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:9999;
+  color:#00ff66;
+  padding:25px;
+  font-family:monospace;
+  overflow:hidden;
+}
+#terminal{
+  max-width:700px;
+  margin:auto;
+  margin-top:15vh;
+  font-size:18px;
+  line-height:1.7;
+}
+.warning{
+  color:red;
+  font-size:30px;
+  font-weight:bold;
+  text-align:center;
+  animation:blink .4s infinite alternate;
+}
+@keyframes blink{
+  from{opacity:.3}
+  to{opacity:1}
+}
+
+#surprise{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  background:linear-gradient(135deg,#ff512f,#f09819);
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+.pass{
+  background:white;
+  color:#222;
+  width:100%;
+  max-width:400px;
+  border-radius:25px;
+  padding:30px;
+  text-align:center;
+  box-shadow:0 0 40px rgba(255,255,255,.6);
+}
+.pass h1{color:#e63946}
+.pass .emoji{font-size:55px}
+.small{font-size:13px;color:#666}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div style="font-size:55px">🪔</div>
+  <h1>Durga Puja VIP Pass</h1>
+  <p>Generate your special Puja pass 🎉</p>
+
+  <input id="name" type="text" placeholder="Enter your name">
+
+  <select id="category">
+    <option value="Maha Saptami">Maha Saptami</option>
+    <option value="Maha Ashtami">Maha Ashtami</option>
+    <option value="Maha Navami">Maha Navami</option>
+    <option value="Vijaya Dashami">Vijaya Dashami</option>
+  </select>
+
+  <select id="dress">
+    <option value="Traditional">Traditional</option>
+    <option value="Kurta / Panjabi">Kurta / Panjabi</option>
+    <option value="Saree">Saree</option>
+    <option value="Casual">Casual</option>
+  </select>
+
+  <button onclick="generatePass()">🎟️ Generate VIP Pass</button>
+</div>
+
+<!-- Sound -->
+<audio id="generateSound" preload="auto">
+  <source src="Standard recording 31.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Fake visual sequence -->
+<div id="screen">
+  <div id="terminal"></div>
+</div>
+
+<!-- Surprise -->
+<div id="surprise">
+  <div class="pass">
+    <div class="emoji">🎉</div>
+    <h1>SURPRISE!</h1>
+    <h2>Durga Puja VIP Pass</h2>
+
+    <p><b>Name:</b> <span id="passName"></span></p>
+    <p><b>Puja:</b> <span id="passCategory"></span></p>
+    <p><b>Dress:</b> <span id="passDress"></span></p>
+
+    <hr>
+    <p>🪔 শুভ দুর্গাপূজা 🪔</p>
+    <p class="small">This was only a visual prank 😄</p>
+
+    <button onclick="location.reload()">Close</button>
+  </div>
+</div>
+
+<script>
+let prankRunning = false;
+
+/* Prevent leaving the page during the visual sequence */
+history.pushState(null, "", location.href);
+
+window.addEventListener("popstate", function(){
+  if(prankRunning){
+    history.pushState(null, "", location.href);
+  }
+});
+
+function escapeHTML(str){
+  return str.replace(/[&<>"']/g, function(m){
+    return {
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[m];
+  });
+}
+
+function vibrate(){
+  if("vibrate" in navigator){
+    navigator.vibrate([300,150,300,150,300]);
+  }
+}
+
+function generatePass(){
+
+  const nameInput = document.getElementById("name").value.trim();
+
+  if(!nameInput){
+    alert("Please enter your name first!");
+    return;
+  }
+
+  const name = escapeHTML(nameInput);
+  const category = escapeHTML(
+    document.getElementById("category").value
+  );
+  const dress = escapeHTML(
+    document.getElementById("dress").value
+  );
+
+  /* Play uploaded sound */
+  const sound = document.getElementById("generateSound");
+  sound.currentTime = 0;
+  sound.play().catch(() => {});
+
+  prankRunning = true;
+
+  vibrate();
+
+  document.getElementById("screen").style.display = "block";
+
+  const terminal = document.getElementById("terminal");
+
+  const messages = [
+    "Initializing security scan...",
+    "Scanning device...",
+    "Checking system files...",
+    "Analyzing network...",
+    "Checking applications...",
+    "Security warning detected...",
+    "Verifying system integrity...",
+    "Running final security check..."
+  ];
+
+  let i = 0;
+
+  function nextMessage(){
+
+    if(i < messages.length){
+
+      terminal.innerHTML +=
+        "<div>> " + messages[i] + "</div>";
+
+      i++;
+
+      setTimeout(nextMessage, 2200);
+
+    }else{
+
+      terminal.innerHTML +=
+        '<div class="warning">SYSTEM COMPROMISED</div>';
+
+      setTimeout(function(){
+
+        terminal.innerHTML =
+          "<div>> Processing...</div>" +
+          "<div>> Preparing surprise...</div>";
+
+        setTimeout(function(){
+
+          document.getElementById("screen").style.display = "none";
+
+          document.getElementById("passName").innerHTML = name;
+          document.getElementById("passCategory").innerHTML = category;
+          document.getElementById("passDress").innerHTML = dress;
+
+          document.getElementById("surprise").style.display = "flex";
+
+          prankRunning = false;
+
+        },3000);
+
+      },3000);
+    }
+  }
+
+  nextMessage();
+}
+</script>
+
+</body>
+</html>
